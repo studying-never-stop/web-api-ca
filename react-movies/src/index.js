@@ -18,6 +18,7 @@ import PersonDetailPage from "./pages/personDetailPage";
 import LoginPage from "./pages/loginPage";
 import ProtectedRoutes from "./protectedRoutes";
 import AuthContextProvider from "./contexts/authContext";
+import RegisterPage from "./pages/registerPage"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/cast" element={ <PersonPage /> } />
         <Route path="/person/:id" element={<PersonDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<RegisterPage />} />
       </Routes>
       </ AuthContextProvider >
       </MoviesContextProvider>
