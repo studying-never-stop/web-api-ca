@@ -4,7 +4,7 @@ import express from 'express';
 import { 
   getMovies, 
   getMovie, 
-  getGenres, 
+  getMovieGenres, 
   getUpcomingMovies, 
   getMovieImages, 
   getMovieReviews, 
@@ -35,54 +35,32 @@ router.post(
     })
   );
 
-router.post(
-  "/:id",
-  asyncHandler(async (req, res) => {
-    const { args } = req.body; // Extract args from request body
-    try {
-      const movie = await getMovie(args);
-      res.status(200).json(movie);
-    } catch (error) {
-      res.status(500).json({
-      message: error.message || "Failed to fetch movies.",
-      status_code: 500,
-      });
-    }
-    })
-  );
-
-router.get('/', asyncHandler(async (req, res) => {
-    let { page = 1, limit = 10 } = req.query; // destructure page and limit and set default values
-    [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
-
-    // Parallel execution of counting movies and getting movies using movieModel
-    const [total_results, results] = await Promise.all([
-        movieModel.estimatedDocumentCount(),
-        movieModel.find().limit(limit).skip((page - 1) * limit)
-    ]);
-    const total_pages = Math.ceil(total_results / limit); //Calculate total number of pages (= total No Docs/Number of docs per page) 
-
-    //construct return Object and insert into response object
-    const returnObject = {
-        page,
-        total_pages,
-        total_results,
-        results
-    };
-    res.status(200).json(returnObject);
-}));
-
+// router.post(
+//   "/:id",
+//   asyncHandler(async (req, res) => {
+//     const { args } = req.body; // Extract args from request body
+//     try {
+//       const movie = await getMovie(args);
+//       res.status(200).json(movie);
+//     } catch (error) {
+//       res.status(500).json({
+//       message: error.message || "Failed to fetch movie.",
+//       status_code: 500,
+//       });
+//     }
+//     })
+//   );
 
 // Get movie details
-router.get('/:id', asyncHandler(async (req, res) => {
-    const id = parseInt(req.params.id);
-    const movie = await movieModel.findByMovieDBId(id);
-    if (movie) {
-        res.status(200).json(movie);
-    } else {
-        res.status(404).json({message: 'The movie you requested could not be found.', status_code: 404});
-    }
-}));
+// router.get('/:id', asyncHandler(async (req, res) => {
+//     const id = parseInt(req.params.id);
+//     const movie = await movieModel.findByMovieDBId(id);
+//     if (movie) {
+//         res.status(200).json(movie);
+//     } else {
+//         res.status(404).json({message: 'The movie you requested could not be found.', status_code: 404});
+//     }
+// }));
 
 router.post('/upcoming', asyncHandler(async (req, res) => {
     const { args } = req.body; // Extract args from request body
@@ -97,15 +75,170 @@ router.post('/upcoming', asyncHandler(async (req, res) => {
       }
 }));
 
+// router.get('/getGenres', asyncHandler(async (req, res) => {
+//       try {
+//         console.log("进入这里")
+//         const movies = await getMovieGenres(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movies.",
+//           status_code: 500,
+//         });
+//       }
+// }));
 // 获取电影类型的路由
 router.get(
-    '/tmdb/genres',
+    '/getGenres',
     asyncHandler(async (req, res) => {
         const genres = await getMovieGenres(); // 调用服务函数获取数据
+        console.log(genres)
         res.status(200).json(genres); // 返回类型数据
     })
 );
 
+// router.post(
+//     "/getMovieImages",
+//     asyncHandler(async (req, res) => {
+//       const { args } = req.body; // Extract args from request body
+//       try {
+//         const movies = await getMovieImages(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movieImages.",
+//           status_code: 500,
+//         });
+//       }
+//     })
+//   );
 
+//   router.post(
+//     "/getMovieReviews",
+//     asyncHandler(async (req, res) => {
+//       const { args } = req.body; // Extract args from request body
+//       try {
+//         const movies = await getMovieReviews(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movieImages.",
+//           status_code: 500,
+//         });
+//       }
+//     })
+//   );
+
+//   router.post(
+//     "/getPersons",
+//     asyncHandler(async (req, res) => {
+//       const { args } = req.body; // Extract args from request body
+//       try {
+//         const movies = await getPersons(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movieImages.",
+//           status_code: 500,
+//         });
+//       }
+//     })
+//   );
+
+//   router.post(
+//     "/getPopular",
+//     asyncHandler(async (req, res) => {
+//       const { args } = req.body; // Extract args from request body
+//       try {
+//         const movies = await getPopular(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movieImages.",
+//           status_code: 500,
+//         });
+//       }
+//     })
+//   );
+
+//   router.post(
+//     "/getCredits",
+//     asyncHandler(async (req, res) => {
+//       const { args } = req.body; // Extract args from request body
+//       try {
+//         const movies = await getCredits(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movieImages.",
+//           status_code: 500,
+//         });
+//       }
+//     })
+//   );
+
+//   router.post(
+//     "/getRecommendation",
+//     asyncHandler(async (req, res) => {
+//       const { args } = req.body; // Extract args from request body
+//       try {
+//         const movies = await getRecommendation(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movieImages.",
+//           status_code: 500,
+//         });
+//       }
+//     })
+//   );
+
+//   router.post(
+//     "/getPersonImages",
+//     asyncHandler(async (req, res) => {
+//       const { args } = req.body; // Extract args from request body
+//       try {
+//         const movies = await getPersonImages(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movieImages.",
+//           status_code: 500,
+//         });
+//       }
+//     })
+//   );
+
+//   router.post(
+//     "/getPerson",
+//     asyncHandler(async (req, res) => {
+//       const { args } = req.body; // Extract args from request body
+//       try {
+//         const movies = await getPerson(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movieImages.",
+//           status_code: 500,
+//         });
+//       }
+//     })
+//   );
+
+//   router.post(
+//     "/getMoviesCredits",
+//     asyncHandler(async (req, res) => {
+//       const { args } = req.body; // Extract args from request body
+//       try {
+//         const movies = await getMoviesCredits(args);
+//         res.status(200).json(movies);
+//       } catch (error) {
+//         res.status(500).json({
+//           message: error.message || "Failed to fetch movieImages.",
+//           status_code: 500,
+//         });
+//       }
+//     })
+//   );
 
 export default router;

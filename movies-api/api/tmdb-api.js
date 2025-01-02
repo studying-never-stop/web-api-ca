@@ -20,8 +20,10 @@ export const getMovies = async ({ queryKey }) => {
   };
   
   export const getMovie = async ({ queryKey }) => {
+    console.log(queryKey)
     try {
       const [, { id }] = queryKey;
+
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_KEY}`
       );
@@ -38,23 +40,23 @@ export const getMovies = async ({ queryKey }) => {
     }
   };
   
-  export const getGenres = async () => {
+  export const getMovieGenres = async () => {
     try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.TMDB_KEY}&language=en-US`
-      );
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to fetch genres.");
-      }
-  
-      return await response.json();
+        const response = await fetch(
+            `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.TMDB_KEY}&language=en-US`
+        );
+        console.log(response)
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to fetch movie genres.');
+        }
+
+        return await response.json(); // 返回完整的响应 JSON
     } catch (error) {
-      console.error("Error fetching genres:", error.message);
-      throw error;
+        console.error('Error fetching movie genres:', error.message);
+        throw error;
     }
-  };
+};
   
   export const getMovieImages = async ({ queryKey }) => {
     try {
