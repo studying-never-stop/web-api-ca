@@ -1,4 +1,13 @@
 import React, { useState } from "react";
+import {
+  addToFavorites as addToFavoritesRequest, // 新添加：前端请求
+  removeFromFavorites as removeFromFavoritesRequest, // 新添加：前端请求
+  addToWatchlist as addToWatchlistRequest, // 新添加：前端请求
+  removeFromWatchlist as removeFromWatchlistRequest, // 新添加：前端请求
+  getUserMovieList, // 新添加：获取用户数据
+} from "../api/movies-api"; // 假设请求函数在此文件中
+import { AuthContext } from "../contexts/authContext"; // 引入 AuthContext 用于获取登录状态和用户名
+
 
 export const MoviesContext = React.createContext(null);
 
@@ -10,16 +19,36 @@ const MoviesContextProvider = (props) => {
   const [moviePage, setMoviePage] = useState(1); 
   const [popularPage, setPopularMoviePage] = useState(1);
   const [upcomingPage, setupcomingMoviePage] = useState(1);  
+  const { isAuthenticated, userName } = useContext(AuthContext); // 从 AuthContext 获取登录状态和用户名
+
+  // 初始化用户数据
+  const initializeUserData = async (username) => {
+    try {
+      const userData = await getUserMovieList(username);
+      setFavorites(userData.favorites || []);
+      setToWatch(userData.toWatch || []);
+    } catch (error) {
+      console.error("Error initializing user data:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated && userName) {
+      initializeUserData(userName); // 登录后初始化用户数据
+    }
+  }, [isAuthenticated, userName]); // 监听登录状态和用户名变化
 
   const addReview = (movie, review) => {
     setMyReviews( {...myReviews, [movie.id]: review } )
   };
   //console.log(myReviews);
 
-  const addToFavorites = (movie) => {
+  const addToFavorites = async (movie) => {
     let newFavorites = [];
     if (!favorites.includes(movie.id)){
+      await addToFavoritesRequest("username_placeholder", movie.id); // 新添加：发送请求
       newFavorites = [...favorites, movie.id];
+      setFavorites(newFavorites);
     }
     else{
       newFavorites = [...favorites];
@@ -28,21 +57,24 @@ const MoviesContextProvider = (props) => {
   };
   
   // We will use this function in the next step
-  const removeFromFavorites = (movie) => {
+  const removeFromFavorites = async (movie) => {
+    await removeFromFavoritesRequest("username_placeholder", movie.id); // 新添加：发送请求
     setFavorites( favorites.filter(
       (mId) => mId !== movie.id
     ) )
   };
 
-  const removeFromWishList = (movie) => {
+  const removeFromWishList = async (movie) => {
+    await removeFromWatchlistRequest("username_placeholder", movie.id); // 新添加：发送请求
     setToWatch( toWatch.filter(
       (mId) => mId !== movie.id
     ))
   };
 
-  const addToWatch = (movie) => {
+  const addToWatch = async (movie) => {
     let newToWatch = [];
     if (!toWatch.includes(movie.id)){
+      await addToWatchlistRequest("username_placeholder", movie.id); // 新添加：发送请求
       newToWatch = [...toWatch, movie.id];
     }
     else{
@@ -51,6 +83,7 @@ const MoviesContextProvider = (props) => {
     setToWatch(newToWatch)
   };
   // console.log(toWatch)
+  
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -86,6 +119,7 @@ const MoviesContextProvider = (props) => {
         handlesetMoviePageChange,
         handlePopularPageChange,
         handleUpcomingPageChange,
+        initializeUserData,
       }}
     >
       {props.children}
