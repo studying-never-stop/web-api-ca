@@ -68,9 +68,17 @@ router.get('/:id', asyncHandler(async (req, res) => {
     }
 }));
 
-router.get('/tmdb/upcoming', asyncHandler(async (req, res) => {
-    const upcomingMovies = await getUpcomingMovies();
-    res.status(200).json(upcomingMovies);
+router.post('/tmdb/upcoming', asyncHandler(async (req, res) => {
+    const { args } = req.body; // Extract args from request body
+      try {
+        const movies = await getUpcomingMovies(args);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movies.",
+          status_code: 500,
+        });
+      }
 }));
 
 // 获取电影类型的路由
