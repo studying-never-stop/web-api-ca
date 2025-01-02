@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -11,10 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { AuthContext } from "../../contexts/authContext.js";
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
+
 const SiteHeader = ({ history }) => {
+  const context = useContext(AuthContext);
+  console.log("1111",context)
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -22,6 +26,9 @@ const SiteHeader = ({ history }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   
   const navigate = useNavigate();
+
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
+  const userMenuOpen = Boolean(userMenuAnchorEl);
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -38,6 +45,14 @@ const SiteHeader = ({ history }) => {
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleUserMenuClose = () => {
+    setUserMenuAnchorEl(null);
+  };
+
+  const handleUserMenu = (event) => {
+    setUserMenuAnchorEl(event.currentTarget);
   };
 
   return (
@@ -99,6 +114,31 @@ const SiteHeader = ({ history }) => {
                 ))}
               </>
             )}
+            {context.isAuthenticated ? (
+            <>
+              <Button
+                color="inherit"
+                onClick={handleUserMenu}
+              >
+                Hello, {context.userName}
+              </Button>
+              <Menu
+                id="user-menu"
+                anchorEl={userMenuAnchorEl}
+                open={userMenuOpen}
+                onClose={handleUserMenuClose}
+              >
+                <MenuItem onClick={context.signout}>Sign Out</MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <Button
+              color="inherit"
+              onClick={() => navigate("/login", { replace: true })}
+            >
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <Offset />
