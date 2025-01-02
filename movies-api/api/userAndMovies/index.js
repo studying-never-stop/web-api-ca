@@ -1,6 +1,5 @@
 import express from "express";
-import UserMovieList from "../models/UserMovieListModel.js"; // 用户电影列表模型
-import User from "../models/UserModel.js"; // 用户模型
+import UserMovieList from "./UserMovieListModel"; // 用户电影列表模型
 
 const router = express.Router();
 
@@ -9,11 +8,6 @@ router.post("/initialize", async (req, res) => {
   const { username } = req.body;
 
   try {
-    // 确保用户在 User 表中存在
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
 
     // 确保用户在 UserMovieList 表中存在
     let userMovieList = await UserMovieList.findOne({ username });

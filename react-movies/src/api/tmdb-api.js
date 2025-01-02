@@ -176,10 +176,11 @@ export const signup = async (username, password) => {
 
 export const initializeUserMovieList = async (username) => {
   try {
-    const response = await fetch("http://localhost:8080/api/initialize", {
+    const response = await fetch("http://localhost:8080/api/userAndMovies/initialize", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': window.localStorage.getItem('token')
       },
       body: JSON.stringify({ username }),
     });
@@ -197,10 +198,11 @@ export const initializeUserMovieList = async (username) => {
 
 export const addToFavorites = async (username, movieId) => {
   try {
-    const response = await fetch("http://localhost:8080/api/favorites/add", {
+    const response = await fetch("http://localhost:8080/api/userAndMovies/favorites/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': window.localStorage.getItem('token')
       },
       body: JSON.stringify({ username, movieId }),
     });
@@ -218,10 +220,11 @@ export const addToFavorites = async (username, movieId) => {
 
 export const removeFromFavorites = async (username, movieId) => {
   try {
-    const response = await fetch("http://localhost:8080/api/favorites/remove", {
+    const response = await fetch("http://localhost:8080/api/userAndMovies/favorites/remove", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': window.localStorage.getItem('token')
       },
       body: JSON.stringify({ username, movieId }),
     });
@@ -239,10 +242,11 @@ export const removeFromFavorites = async (username, movieId) => {
 
 export const addToWatchlist = async (username, movieId) => {
   try {
-    const response = await fetch("http://localhost:8080/api/watchlist/add", {
+    const response = await fetch("http://localhost:8080/api/userAndMovies/watchlist/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': window.localStorage.getItem('token')
       },
       body: JSON.stringify({ username, movieId }),
     });
@@ -260,10 +264,11 @@ export const addToWatchlist = async (username, movieId) => {
 
 export const removeFromWatchlist = async (username, movieId) => {
   try {
-    const response = await fetch("http://localhost:8080/api/watchlist/remove", {
+    const response = await fetch("http://localhost:8080/api/userAndMovies/watchlist/remove", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': window.localStorage.getItem('token')
       },
       body: JSON.stringify({ username, movieId }),
     });
@@ -281,10 +286,11 @@ export const removeFromWatchlist = async (username, movieId) => {
 
 export const getUserMovieList = async (username) => {
   try {
-    const response = await fetch("http://localhost:8080/api/get", {
+    const response = await fetch("http://localhost:8080/api/userAndMovies/get", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': window.localStorage.getItem('token')
       },
       body: JSON.stringify({ username }),
     });
