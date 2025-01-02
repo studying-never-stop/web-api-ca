@@ -10,21 +10,16 @@ export const getMovies = async (args) => {
   return response.json();
 };
   
-export const getMovie = (args) => {
-  // console.log(args)
-  const [, idPart] = args.queryKey;
-  const { id } = idPart;
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
-    }
-    return response.json();
-  })
-  .catch((error) => {
-    throw error
- });
+export const getMovie = async (args) => {
+  const response = await fetch('http://localhost:8080/api/movies/:id', {
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': window.localStorage.getItem('token')
+    },
+    method: 'post',
+    body: JSON.stringify({ args:args })
+});
+return response.json();
 };
   
   export const getGenres = async () => {
@@ -72,7 +67,7 @@ export const getMovie = (args) => {
   };
 
 export const getUPComingMovies = async (args) => {
-  const response = await fetch('http://localhost:8080/api/movies/tmdb/upcoming', {
+  const response = await fetch('http://localhost:8080/api/movies/upcoming', {
     headers: {
         'Content-Type': 'application/json',
         'Authorization': window.localStorage.getItem('token')

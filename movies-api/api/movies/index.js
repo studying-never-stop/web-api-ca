@@ -35,6 +35,22 @@ router.post(
     })
   );
 
+router.post(
+  "/:id",
+  asyncHandler(async (req, res) => {
+    const { args } = req.body; // Extract args from request body
+    try {
+      const movie = await getMovie(args);
+      res.status(200).json(movie);
+    } catch (error) {
+      res.status(500).json({
+      message: error.message || "Failed to fetch movies.",
+      status_code: 500,
+      });
+    }
+    })
+  );
+
 router.get('/', asyncHandler(async (req, res) => {
     let { page = 1, limit = 10 } = req.query; // destructure page and limit and set default values
     [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
@@ -68,7 +84,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
     }
 }));
 
-router.post('/tmdb/upcoming', asyncHandler(async (req, res) => {
+router.post('/upcoming', asyncHandler(async (req, res) => {
     const { args } = req.body; // Extract args from request body
       try {
         const movies = await getUpcomingMovies(args);
