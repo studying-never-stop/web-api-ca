@@ -2,12 +2,17 @@ import React, { useContext, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext";
 import { Link } from "react-router-dom";
-import { yellow } from "@mui/material/colors";
+import ErrorDialog from "../components/dialog" 
 
 const LoginPage = () => {
   const context = useContext(AuthContext);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const openDialog = context.openDialog
+  
+  const handleCloseDialog = () => {
+    context.setOpenDialog(false); // 关闭对话框
+  };
 
   const login = () => {
     context.authenticate(userName, password);
@@ -90,6 +95,7 @@ const LoginPage = () => {
           Not Registered? <Link to="/signup" style={{ color: "#ffeb3b", textDecoration: "none" }}>Sign Up!</Link>
         </p>
       </div>
+      <ErrorDialog open={openDialog} onClose={handleCloseDialog} message={context.errorMsg} />
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../contexts/authContext";
+import ErrorDialog from "../components/dialog" 
+
 
 const SignUpPage = () => {
   const context = useContext(AuthContext);
@@ -8,6 +10,11 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
   const [registered, setRegistered] = useState(false);
+  const openDialog = context.openDialog
+  
+  const handleCloseDialog = () => {
+    context.setOpenDialog(false); // 关闭对话框
+  };
 
   const register = () => {
     let passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
@@ -107,6 +114,7 @@ const SignUpPage = () => {
           Already have an account? <Link to="/login" style={{ color: "#ffeb3b", textDecoration: "none" }}>Back to Login</Link>
         </p>
       </div>
+      <ErrorDialog open={openDialog} onClose={handleCloseDialog} message={context.errorMsg} />
     </div>
   );
 };
