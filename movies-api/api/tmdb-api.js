@@ -20,10 +20,8 @@ export const getMovies = async ({ queryKey }) => {
   };
   
   export const getMovie = async ({ queryKey }) => {
-    console.log(queryKey)
     try {
       const [, { id }] = queryKey;
-
       const response = await fetch(
         `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_KEY}`
       );
@@ -45,7 +43,6 @@ export const getMovies = async ({ queryKey }) => {
         const response = await fetch(
             `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.TMDB_KEY}&language=en-US`
         );
-        console.log(response)
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Failed to fetch movie genres.');
@@ -60,21 +57,27 @@ export const getMovies = async ({ queryKey }) => {
   
   export const getMovieImages = async ({ queryKey }) => {
     try {
-      const [, { id }] = queryKey;
-      const response = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}/images?api_key=${process.env.TMDB_KEY}`
-      );
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to fetch movie images.");
+        // 验证 queryKey 是否符合预期格式
+        if (!Array.isArray(queryKey) || queryKey.length < 2 || typeof queryKey[1] !== "object") {
+          throw new Error("Invalid queryKey format. Expected an array with an object.");
+        }
+    
+        const [, { id }] = queryKey; // 解构获取 id
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}/images?api_key=${process.env.TMDB_KEY}`
+        );
+    
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to fetch movie images.");
+        }
+    
+        const data = await response.json();
+        return data; // 返回解析后的 JSON 数据
+      } catch (error) {
+        console.error("Error fetching movie images:", error.message);
+        throw error; // 抛出错误供路由捕获
       }
-  
-      return await response.json();
-    } catch (error) {
-      console.error("Error fetching movie images:", error.message);
-      throw error;
-    }
   };
   
   export const getMovieReviews = async (id) => {

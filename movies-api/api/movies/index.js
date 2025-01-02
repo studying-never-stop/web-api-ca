@@ -35,32 +35,22 @@ router.post(
     })
   );
 
-// router.post(
-//   "/:id",
-//   asyncHandler(async (req, res) => {
-//     const { args } = req.body; // Extract args from request body
-//     try {
-//       const movie = await getMovie(args);
-//       res.status(200).json(movie);
-//     } catch (error) {
-//       res.status(500).json({
-//       message: error.message || "Failed to fetch movie.",
-//       status_code: 500,
-//       });
-//     }
-//     })
-//   );
+router.post(
+  "/getMovie",
+  asyncHandler(async (req, res) => {
+    const { args } = req.body; // Extract args from request body
+    try {
+      const movie = await getMovie(args);
+      res.status(200).json(movie);
+    } catch (error) {
+      res.status(500).json({
+      message: error.message || "Failed to fetch movie.",
+      status_code: 500,
+      });
+    }
+    })
+  );
 
-// Get movie details
-// router.get('/:id', asyncHandler(async (req, res) => {
-//     const id = parseInt(req.params.id);
-//     const movie = await movieModel.findByMovieDBId(id);
-//     if (movie) {
-//         res.status(200).json(movie);
-//     } else {
-//         res.status(404).json({message: 'The movie you requested could not be found.', status_code: 404});
-//     }
-// }));
 
 router.post('/upcoming', asyncHandler(async (req, res) => {
     const { args } = req.body; // Extract args from request body
@@ -75,59 +65,53 @@ router.post('/upcoming', asyncHandler(async (req, res) => {
       }
 }));
 
-// router.get('/getGenres', asyncHandler(async (req, res) => {
-//       try {
-//         console.log("进入这里")
-//         const movies = await getMovieGenres(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movies.",
-//           status_code: 500,
-//         });
-//       }
-// }));
 // 获取电影类型的路由
 router.get(
     '/getGenres',
     asyncHandler(async (req, res) => {
         const genres = await getMovieGenres(); // 调用服务函数获取数据
-        console.log(genres)
         res.status(200).json(genres); // 返回类型数据
     })
 );
 
-// router.post(
-//     "/getMovieImages",
-//     asyncHandler(async (req, res) => {
-//       const { args } = req.body; // Extract args from request body
-//       try {
-//         const movies = await getMovieImages(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movieImages.",
-//           status_code: 500,
-//         });
-//       }
-//     })
-//   );
+router.post(
+    "/getMovieImages",
+    asyncHandler(async (req, res) => {
+      const { queryKey } = req.body; // 从请求体中获取 queryKey
+      if (!queryKey) {
+        return res.status(400).json({
+          message: "queryKey is required.",
+          status_code: 400,
+        });
+      }
+  
+      try {
+        const images = await getMovieImages(queryKey); // 调用服务层函数
+        res.status(200).json(images); // 返回成功响应
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movie images.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
-//   router.post(
-//     "/getMovieReviews",
-//     asyncHandler(async (req, res) => {
-//       const { args } = req.body; // Extract args from request body
-//       try {
-//         const movies = await getMovieReviews(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movieImages.",
-//           status_code: 500,
-//         });
-//       }
-//     })
-//   );
+  router.post(
+    "/getMovieReviews",
+    asyncHandler(async (req, res) => {
+      const { args } = req.body; // Extract args from request body
+      try {
+        const movies = await getMovieReviews(args);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movieImages.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
 //   router.post(
 //     "/getPersons",
@@ -145,37 +129,37 @@ router.get(
 //     })
 //   );
 
-//   router.post(
-//     "/getPopular",
-//     asyncHandler(async (req, res) => {
-//       const { args } = req.body; // Extract args from request body
-//       try {
-//         const movies = await getPopular(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movieImages.",
-//           status_code: 500,
-//         });
-//       }
-//     })
-//   );
+  router.post(
+    "/getPopular",
+    asyncHandler(async (req, res) => {
+      const { args } = req.body; // Extract args from request body
+      try {
+        const movies = await getPopular(args);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movieImages.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
-//   router.post(
-//     "/getCredits",
-//     asyncHandler(async (req, res) => {
-//       const { args } = req.body; // Extract args from request body
-//       try {
-//         const movies = await getCredits(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movieImages.",
-//           status_code: 500,
-//         });
-//       }
-//     })
-//   );
+  router.post(
+    "/getCredits",
+    asyncHandler(async (req, res) => {
+      const { args } = req.body; // Extract args from request body
+      try {
+        const movies = await getCredits(args);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movieImages.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
 //   router.post(
 //     "/getRecommendation",
