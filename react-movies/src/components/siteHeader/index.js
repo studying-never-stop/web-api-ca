@@ -18,7 +18,6 @@ const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader = ({ history }) => {
   const context = useContext(AuthContext);
-  console.log("1111",context)
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 

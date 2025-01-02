@@ -1,9 +1,39 @@
 import movieModel from './movieModel';
 import asyncHandler from 'express-async-handler';
 import express from 'express';
-import { getUpcomingMovies, getMovieGenres } from '../tmdb-api';
+import { 
+  getMovies, 
+  getMovie, 
+  getGenres, 
+  getUpcomingMovies, 
+  getMovieImages, 
+  getMovieReviews, 
+  getPersons, 
+  getPopular, 
+  getCredits, 
+  getRecommendation, 
+  getPersonImages, 
+  getPerson, 
+  getMoviesCredits 
+} from '../tmdb-api';
 
 const router = express.Router();
+
+router.post(
+    "/",
+    asyncHandler(async (req, res) => {
+      const { args } = req.body; // Extract args from request body
+      try {
+        const movies = await getMovies(args);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movies.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
 router.get('/', asyncHandler(async (req, res) => {
     let { page = 1, limit = 10 } = req.query; // destructure page and limit and set default values
@@ -51,5 +81,7 @@ router.get(
         res.status(200).json(genres); // 返回类型数据
     })
 );
+
+
 
 export default router;

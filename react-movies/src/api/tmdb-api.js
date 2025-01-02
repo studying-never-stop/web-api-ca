@@ -1,17 +1,28 @@
-export const getMovies = (args) => {
-  const [,pagrPart] = args.queryKey
-  const { page } = pagrPart
-  return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error(response.json().message);
-    }
-    return response.json();
-  })
-  .catch((error) => {
-     throw error
+// export const getMovies = (args) => {
+//   const [,pagrPart] = args.queryKey
+//   const { page } = pagrPart
+//   return fetch(
+//     `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=${page}`
+//   ).then((response) => {
+//     if (!response.ok) {
+//       throw new Error(response.json().message);
+//     }
+//     return response.json();
+//   })
+//   .catch((error) => {
+//      throw error
+//   });
+// };
+export const getMovies = async (args) => {
+  const response = await fetch('http://localhost:8080/api/movies', {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': window.localStorage.getItem('token')
+      },
+      method: 'post',
+      body: JSON.stringify({ args:args })
   });
+  return response.json();
 };
   
 export const getMovie = (args) => {
