@@ -194,9 +194,11 @@ export const getMovies = async ({ queryKey }) => {
     }
   };
   
-  export const getPersonImages = async ({ queryKey }) => {
+  export const getPersonImages = async ( queryKey ) => {
     try {
+        console.log(queryKey)
       const [, { id }] = queryKey;
+      console.log(id)
       const response = await fetch(
         `https://api.themoviedb.org/3/person/${id}/images?api_key=${process.env.TMDB_KEY}`
       );

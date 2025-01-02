@@ -104,22 +104,6 @@ export const getCredits = async (args) => {
   return response.json();
 };
 
-// export const getCredits = (args) => {
-//   const [, idPart] = args.queryKey;
-//   const { id: movie_id } = idPart;
-//   return fetch(
-//     `https://api.themoviedb.org/3/movie/${movie_id}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}`
-//   ).then((response) => {
-//     if (!response.ok) {
-//       throw new Error(response.json().message);
-//     }
-//     return response.json();
-//   })
-//   .catch((error) => {
-//     throw error
-//  });
-// };
-
 export const getRecommendation = async (args) =>{
   const response = await fetch('http://localhost:8080/api/movies/getRecommendation', {
     headers: {
@@ -145,7 +129,7 @@ export const getPersonImages = async ({ queryKey }) => {
 };
 
 export const getPerson = async (args) => {
-  const response = await fetch('http://localhost:8080/api/movies/person/:id', {
+  const response = await fetch('http://localhost:8080/api/movies/getPerson', {
     headers: {
         'Content-Type': 'application/json',
         'Authorization': window.localStorage.getItem('token')

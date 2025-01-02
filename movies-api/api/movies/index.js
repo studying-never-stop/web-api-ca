@@ -113,21 +113,21 @@ router.post(
     })
   );
 
-//   router.post(
-//     "/getPersons",
-//     asyncHandler(async (req, res) => {
-//       const { args } = req.body; // Extract args from request body
-//       try {
-//         const movies = await getPersons(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movieImages.",
-//           status_code: 500,
-//         });
-//       }
-//     })
-//   );
+  router.post(
+    "/getPersons",
+    asyncHandler(async (req, res) => {
+      const { args } = req.body; // Extract args from request body
+      try {
+        const movies = await getPersons(args);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movieImages.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
   router.post(
     "/getPopular",
@@ -161,68 +161,69 @@ router.post(
     })
   );
 
-//   router.post(
-//     "/getRecommendation",
-//     asyncHandler(async (req, res) => {
-//       const { args } = req.body; // Extract args from request body
-//       try {
-//         const movies = await getRecommendation(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movieImages.",
-//           status_code: 500,
-//         });
-//       }
-//     })
-//   );
+  router.post(
+    "/getRecommendation",
+    asyncHandler(async (req, res) => {
+      const { args } = req.body; // Extract args from request body
+      try {
+        const movies = await getRecommendation(args);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movieImages.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
-//   router.post(
-//     "/getPersonImages",
-//     asyncHandler(async (req, res) => {
-//       const { args } = req.body; // Extract args from request body
-//       try {
-//         const movies = await getPersonImages(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movieImages.",
-//           status_code: 500,
-//         });
-//       }
-//     })
-//   );
+  router.post(
+    "/getPersonImages",
+    asyncHandler(async (req, res) => {
+      const { queryKey } = req.body; // Extract args from request body
+      console.log(queryKey)
+      try {
+        const movies = await getPersonImages(queryKey);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movieImages.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
-//   router.post(
-//     "/getPerson",
-//     asyncHandler(async (req, res) => {
-//       const { args } = req.body; // Extract args from request body
-//       try {
-//         const movies = await getPerson(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movieImages.",
-//           status_code: 500,
-//         });
-//       }
-//     })
-//   );
+  router.post(
+    "/getPerson",
+    asyncHandler(async (req, res) => {
+      const { args } = req.body; // Extract args from request body
+      try {
+        const movies = await getPerson(args);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movieImages.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
-//   router.post(
-//     "/getMoviesCredits",
-//     asyncHandler(async (req, res) => {
-//       const { args } = req.body; // Extract args from request body
-//       try {
-//         const movies = await getMoviesCredits(args);
-//         res.status(200).json(movies);
-//       } catch (error) {
-//         res.status(500).json({
-//           message: error.message || "Failed to fetch movieImages.",
-//           status_code: 500,
-//         });
-//       }
-//     })
-//   );
+  router.post(
+    "/getMoviesCredits",
+    asyncHandler(async (req, res) => {
+      const { args } = req.body; // Extract args from request body
+      try {
+        const movies = await getMoviesCredits(args);
+        res.status(200).json(movies);
+      } catch (error) {
+        res.status(500).json({
+          message: error.message || "Failed to fetch movieImages.",
+          status_code: 500,
+        });
+      }
+    })
+  );
 
 export default router;

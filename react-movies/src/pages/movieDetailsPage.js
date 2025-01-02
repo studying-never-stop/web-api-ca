@@ -19,9 +19,6 @@ const MoviePage = (props) => {
     getCredits
   );
 
-  console.log(movie)
-  console.log(creditsData)
-
   if (isLoading) {
     return <Spinner />;
   }
