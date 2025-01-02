@@ -173,3 +173,130 @@ export const signup = async (username, password) => {
   });
   return response.json();
 };
+
+export const initializeUserMovieList = async (username) => {
+  try {
+    const response = await fetch("http://localhost:8080/api/initialize", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to initialize user movie list: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error initializing user movie list:", error.message);
+    throw error;
+  }
+};
+
+export const addToFavorites = async (username, movieId) => {
+  try {
+    const response = await fetch("http://localhost:8080/api/favorites/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, movieId }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to add movie to favorites: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error adding to favorites:", error.message);
+    throw error;
+  }
+};
+
+export const removeFromFavorites = async (username, movieId) => {
+  try {
+    const response = await fetch("http://localhost:8080/api/favorites/remove", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, movieId }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to remove movie from favorites: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error removing from favorites:", error.message);
+    throw error;
+  }
+};
+
+export const addToWatchlist = async (username, movieId) => {
+  try {
+    const response = await fetch("http://localhost:8080/api/watchlist/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, movieId }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to add movie to watchlist: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error adding to watchlist:", error.message);
+    throw error;
+  }
+};
+
+export const removeFromWatchlist = async (username, movieId) => {
+  try {
+    const response = await fetch("http://localhost:8080/api/watchlist/remove", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, movieId }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to remove movie from watchlist: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error removing from watchlist:", error.message);
+    throw error;
+  }
+};
+
+export const getUserMovieList = async (username) => {
+  try {
+    const response = await fetch("http://localhost:8080/api/get", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user movie list: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching user movie list:", error.message);
+    throw error;
+  }
+};
+
